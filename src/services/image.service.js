@@ -14,7 +14,7 @@ export const generateImageSvc = async (/** @type {string} */ prompt) => {
   const localUrl = "http://localhost:3000/api/v1/generate/sdxl";
   //...v1/generate/sdxl , wuerstchen_v2 , kandinsky_v2 👈
   const serverUrl =
-    "http://imagination-station-production.up.railway.app/api/v1/generate/wuerstchen_v2";
+    "https://imagination-station-production.up.railway.app/api/v1/generate/sdxl";
   try {
     const options = {
       method: "POST",
