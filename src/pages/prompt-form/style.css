@@ -1,0 +1,15 @@
+/* width */
+#prompt-input::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+#prompt-input::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+/* Handle */
+#prompt-input::-webkit-scrollbar-thumb {
+  background: #c4c4c4;
+  border-radius: 20px;
+}

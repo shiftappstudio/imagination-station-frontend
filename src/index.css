@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.custom-text {
+  font-family: "Anton", sans-serif;
+  /* font-family: "Six Caps", sans-serif; */
+  letter-spacing: 2px;
+  font-weight: normal;
+}
