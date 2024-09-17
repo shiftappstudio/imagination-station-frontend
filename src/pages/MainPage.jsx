@@ -84,7 +84,7 @@ export const MainPage = () => {
       <div className="flex items-center justify-between w-full h-[10vh]">
               <img
 
-                        src={"../../public/bahrain.png"}
+                        src={"../../bahrain.png"}
                         className="cursor-pointer rounded-xl h-20 ml-5 w-auto  object-cover "
                         alt=""
                       />
