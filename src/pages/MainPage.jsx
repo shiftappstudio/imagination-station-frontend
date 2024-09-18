@@ -18,6 +18,7 @@ import * as Yup from "yup";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 
 
+
 export const MainPage = () => {
   // const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState([]);
@@ -28,6 +29,21 @@ export const MainPage = () => {
   const [startApp, setStartApp] = useState(false);
   // const [clickedButton, setClickedButton] = useState("");
   // const [randomPrompt, setRandomPrompt] = useState("");
+
+  const [showAllImages, setShowAllImages] = useState(false);
+
+  // Show All images
+  const handleShowAllImages = () => {
+    setShowAllImages(true);
+  };
+
+  // Less Action
+  const handleReturn = () => {
+    setShowAllImages(false);
+  };
+
+  
+
   const [rightContent, setRightContent] = useState("empty");
   const hasEffectRun = useRef(false);
   useEffect(() => {
@@ -81,124 +97,164 @@ export const MainPage = () => {
 
     <div id="main-container" className="md:mb-5" >
       <ToastContainer />
+      {/* FIrst section */}
       <div className="flex items-center justify-between w-full h-[10vh]">
-              <img
+        <img
 
-                        src={"../../bahrain.png"}
-                        className="cursor-pointer rounded-xl h-20 ml-5 w-auto  object-cover "
-                        alt=""
-                      />
-                      <div>
-                      <h1 className="mb-0 text-xs text-center md:text-xs font-normal leading-normal text-white md:leading-relaxed lg:text-2xl">
- Bring your imagination to life!
-</h1>
-<p className="text-center text-xs font-thin text-white lg:text-xs md:text-xs">
- Discover the limitless potential of Artificial Intelligence to transform <br/>industries, enhance efficiency, and unlock new possibilities.
-</p>
-              </div>
-              <div></div>
-          </div>
+          src={"../../bahrain.png"}
+          className="cursor-pointer rounded-xl h-20 ml-5 w-auto  object-cover "
+          alt=""
+        />
+        <div>
+          <h1 className="mb-0 text-xs text-center md:text-xs font-normal leading-normal text-white md:leading-relaxed lg:text-2xl">
+            Bring your imagination to life!
+          </h1>
+          <p className="text-center text-xs font-thin text-white lg:text-xs md:text-xs">
+            Discover the limitless potential of Artificial Intelligence to transform <br />industries, enhance efficiency, and unlock new possibilities.
+          </p>
+        </div>
+        <div></div>
+      </div>
+      {/* Second section */}
       <div
         className="flex h-[85vh] md:w-[95] flex-col gap-5 p-5 md:flex-col md:bg-[#F77774] border md:rounded-xl  md:m-3 xl:flex-row "
       >
         <div className="flex w-full flex-1 flex-col-reverse gap-5 xl:w-6/12">
 
-        
+
           <div className="prose flex max-w-none flex-grow flex-col justify-center rounded-lg py-0">
-            <div className="mt-0 flex w-full justify-center">
-              <Formik
-                initialValues={{
-                  prompt:
-                    ""
-                }}
-                onSubmit={async (values, { setSubmitting, resetForm }) => {
-                  setSubmitting(true);
-                  setRightContent("loading");
-                  try {
-                    let prompt = values.prompt;
-                    const data = await generateImageSvc(prompt);
-                    setResult(data.image_url);
-                    const _images = await getImagesSvc();
-                    setImages(_images);
-                    downloadImage(data.image_url);
-                    setRightContent("new-result");
-                    setSubmitting(false);
-                    resetForm();
-                  } catch (error) {
-                    setRightContent("error");
-                    setError(error.message);
-                  }
-                }}
-              >
-                {({ isSubmitting, values }) => (
-                  <Form className="flex h-full w-11/12 flex-col items-center gap-8 ">
-                    <Field
-                      rows={10}
-                      as="textarea"
-                      type="text"
-                      id="prompt-input"
-                      placeholder='Try describing your dream image like "a serene lakeside sunset"'
-                      className="w-full h-32 md:h-32 rounded-xl bg-white  p-4 py-2 focus:outline-none "
-                      name="prompt"
-                    />
-                    <div className="flex gap-8 w-full">
-                      {/* <button
-                        className={`custom-text w-60 rounded-3xl  -accent py-2 text-xl font-bold text-accent focus:outline-none 2xl:py-4`}
-                        type="submit"
-                        onClick={() => {
-                          const _prompt = getRandomPrompt();
-                          setRandomPrompt(_prompt);
-                          setClickedButton("IMAGINE");
-                        }}
+
+
+            {showAllImages ? (
+              <div className="relative mt-auto flex w-full items-center justify-center rounded-lg py-2 ScroolingPage ">
+                <div className="h-80 w-[300px] sm:w-[500px] md:w-[650px] xl:w-[500px] 2xl:w-[650px]">
+                  <div className="h-full w-full lg:w-max md:w-full overflow-y-auto PictureM NewCSS" style={{ height: '500px' }}>
+                 <center>
+                 <button
+                        className="bg-[#ff553a] h-11 rounded-xl px-10 text-lg font-semibold mr-0.5 text-white focus:outline-none"
+                        onClick={handleReturn}
                       >
-                        IMAGINE
-                      </button> */}
+                        See less
+                      </button>
+                 </center>
+                    <div className="grid grid-cols-3 gap-10 w-full lg:w-full md:w-full PictureSize w-200">
+                      {images.map((image, index) => (
+                        <Thumbnail
+                          key={image.id}
+                          index={index}
+                          id={image.id}
+                          url={image.url}
+                          setShowFullScreen={setShowFullScreen}
+                          setFullScreenImage={setFullScreenImage}
+                          updateImages={async () => {
+                            const _images = await getImagesSvc();
+                            setImages(_images);
+                          }}
+                          images={images}
+                          setImages={setImages}
+                          setRightContent={setRightContent}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            ) : (
+              <div className="relative mt-auto flex w-full items-center justify-center rounded-lg py-2">
+                <div className="h-80 w-[300px] sm:w-[500px] md:w-[650px] xl:w-[500px] 2xl:w-[650px]">
+                  <div className="h-full w-full lg:w-max md:w-full overflow-y-auto PictureM">
+                    <div className="grid grid-cols-3 gap-6 w-full lg:w-full md:w-full PictureSize w-200">
+                      {images.slice(0, 6).map((image, index) => (
+                        <Thumbnail
+                          key={image.id}
+                          index={index}
+                          id={image.id}
+                          url={image.url}
+                          setShowFullScreen={setShowFullScreen}
+                          setFullScreenImage={setFullScreenImage}
+                          updateImages={async () => {
+                            const _images = await getImagesSvc();
+                            setImages(_images);
+                          }}
+                          images={images}
+                          setImages={setImages}
+                          setRightContent={setRightContent}
+                        />
+                      ))}
+                    </div>
+                    <center>
                       <button
-                        className={`${
-                          isSubmitting || !values.prompt
+                        className="bg-[#ff553a] h-11 rounded-xl px-10 text-lg font-semibold mr-0.5 text-white focus:outline-none"
+                        onClick={handleShowAllImages}
+                      >
+                        See more
+                      </button>
+                    </center>
+                  </div>
+
+                </div>
+
+              </div>
+
+            )}
+
+            {!showAllImages && (
+              <div className="mt-0 flex w-full justify-center">
+                <Formik
+                  initialValues={{ prompt: '' }}
+                  onSubmit={async (values, { setSubmitting, resetForm }) => {
+                    setSubmitting(true);
+                    setRightContent('loading');
+                    try {
+                      let prompt = values.prompt;
+                      const data = await generateImageSvc(prompt);
+                      setResult(data.image_url);
+                      const _images = await getImagesSvc();
+                      setImages(_images);
+                      downloadImage(data.image_url);
+                      setRightContent('new-result');
+                      setSubmitting(false);
+                      resetForm();
+                    } catch (error) {
+                      setRightContent('error');
+                      setError(error.message);
+                    }
+                  }}
+                >
+                  {({ isSubmitting, values }) => (
+                    <Form className="flex h-full w-11/12 flex-col items-center gap-8">
+                      <Field
+                        rows={10}
+                        as="textarea"
+                        type="text"
+                        id="prompt-input"
+                        placeholder='Try describing your dream image like "a serene lakeside sunset"'
+                        className="w-full h-32 md:h-32 rounded-xl bg-white p-4 py-2 focus:outline-none"
+                        name="prompt"
+                      />
+                      <div className="flex gap-8 w-full">
+                        <button
+                          className={`${isSubmitting || !values.prompt
                             ? "bg-[#e21937]"
                             : "bg-gradient-to-r bg-[#e21937] to-complementary"
-                        }  h-12 w-full rounded-xl text-lg font-semibold text-white focus:outline-none`}
-                        type="submit"
-                        disabled={isSubmitting || !values.prompt}
-                        // onClick={() => setClickedButton("GENERATE")}
-                      >
-                        Imagine
-                      </button>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
-            </div>
+                            } h-12 w-full rounded-xl text-lg font-semibold text-white focus:outline-none`}
+                          type="submit"
+                          disabled={isSubmitting || !values.prompt}
+                        >
+                          Imagine
+                        </button>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            )}
           </div>
-          <div className="relative mt-auto flex w-full items-center justify-center rounded-lg py-2">
-            <div className="h-80 w-[300px] sm:w-[500px] md:w-[650px] xl:w-[500px] 2xl:w-[650px]">
 
 
-    <div className="h-full w-full lg:w-max md:w-full  overflow-y-auto">
-      <div className="grid grid-cols-3 gap-5 w-full lg:w-full md:w-full">
-        {images.map((image, index) => (
-           <Thumbnail
-            key={image.id}
-            index={index}
-            id={image.id}
-            url={image.url}
-            setShowFullScreen={setShowFullScreen}
-            setFullScreenImage={setFullScreenImage}
-            updateImages={async () => {
-              const _images = await getImagesSvc();
-              setImages(_images);
-            }}
-            images={images}
-            setImages={setImages}
-            setRightContent={setRightContent}
-          />
-       ))}
-      </div>
-    </div>
-            </div>
-          </div>
         </div>
+
         <div className="flex w-full flex-1 flex-col items-center rounded-lg   py-5 sm:py-16 xl:w-6/12 xl:py-0  ">
           <div className="w-full flex-grow px-10 md:px-40">
             {(() => {
@@ -213,7 +269,7 @@ export const MainPage = () => {
                   return <Loader />;
                 case "new-result":
                   return (
-                    <div className="flex h-full w-full items-center justify-center pt-5">
+                    <div className="flex h-full w-full items-center justify-center pt-5 ">
                       <img
                         onClick={() => {
                           setFullScreenImage(result);
@@ -227,17 +283,18 @@ export const MainPage = () => {
                   );
                 case "selected-gallery":
                   return (
-                    <div className="flex h-full w-full items-center justify-center pt-5">
+                    // margin-right: 10px;
+                    <center> <div className="flex h-full w-200 items-center justify-center pt-5 PictureSize" style={{ width: '400px', marginLeft: '-20px' }}>
                       <img
                         src={fullScreenImage}
-                        className="h-max cursor-pointer rounded-xl  object-cover "
+                        className="h-max cursor-pointer rounded-xl  object-cover w-200"
                         alt=""
                         onClick={() => {
                           setFullScreenImage(fullScreenImage);
                           setShowFullScreen(true);
                         }}
                       />
-                    </div>
+                    </div></center>
                   );
                 case "error":
                   return (
@@ -272,24 +329,21 @@ export const MainPage = () => {
                     rows={1}
                     type="text"
                     id="prompt-input"
-                    placeholder={`${
-                      errors.email && touched.email
-                        ? errors.email
-                        : "xyz@gmail.com"
-                    }`}
-                    className={`h-12 w-full rounded-2xl ${
-                      errors.email && touched.email
-                        ? "border-red-500"
-                        : ""
-                    } bg-transparent p-4 focus:outline-none`}
+                    placeholder={`${errors.email && touched.email
+                      ? errors.email
+                      : "xyz@gmail.com"
+                      }`}
+                    className={`h-12 w-full rounded-2xl ${errors.email && touched.email
+                      ? "border-red-500"
+                      : ""
+                      } bg-transparent p-4 focus:outline-none`}
                     name="email"
                   />
                   <button
-                    className={`${
-                      errors.email || isSubmitting || !values.email
-                        ? "bg-[#ff553a]"
-                        : "bg-gradient-to-r bg-slate-300 to-complementary"
-                    } h-11 rounded-xl px-10 text-lg font-semibold mr-0.5 text-white focus:outline-none`}
+                    className={`${errors.email || isSubmitting || !values.email
+                      ? "bg-[#ff553a]"
+                      : "bg-gradient-to-r bg-slate-300 to-complementary"
+                      } h-11 rounded-xl px-10 text-lg font-semibold mr-0.5 text-white focus:outline-none`}
                     type="submit"
                     disabled={isSubmitting}
                   >
@@ -301,26 +355,28 @@ export const MainPage = () => {
           </div>
         </div>
       </div>
-      {showFullScreen && (
-        <div className="absolute left-0 top-0 z-50  h-screen w-screen bg-black bg-opacity-60">
-          <div className="relative flex h-full w-full justify-center ">
-            <button className="absolute right-7 top-7">
-              <RxCross1
-                size={47}
-                color="#fff"
-                onClick={() => setShowFullScreen(false)}
-              />
-            </button>
-            <div className="h-screen w-fit">
-              <img
-                src={fullScreenImage}
-                className=" h-full object-contain"
-                alt=""
-              />
+      {
+        showFullScreen && (
+          <div className="absolute left-0 top-0 z-50  h-screen w-screen bg-black bg-opacity-60">
+            <div className="relative flex h-full w-full justify-center ">
+              <button className="absolute right-7 top-7">
+                <RxCross1
+                  size={47}
+                  color="#fff"
+                  onClick={() => setShowFullScreen(false)}
+                />
+              </button>
+              <div className="h-screen w-fit">
+                <img
+                  src={fullScreenImage}
+                  className=" h-full object-contain"
+                  alt=""
+                />
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   );
 };

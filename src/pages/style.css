@@ -1,8 +1,8 @@
 #main-container {
   background: #ff553a;
-  background: -moz-linear-gradient(45deg, #ff553a 0%,  #e21937 100%);
-  background: -webkit-linear-gradient(45deg, #ff553a 0%,  #e21937 100%);
-  background: linear-gradient(45deg, #ff553a 0%,  #e21937 100%);
+  background: -moz-linear-gradient(45deg, #ff553a 0%, #e21937 100%);
+  background: -webkit-linear-gradient(45deg, #ff553a 0%, #e21937 100%);
+  background: linear-gradient(45deg, #ff553a 0%, #e21937 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff553a",endColorstr=" #e21937",GradientType=1);
 }
 /*  */
@@ -27,3 +27,33 @@
 .swiper-button-prev::after {
   content: "";
 } */
+
+.w-200 {
+  margin-right: 10px;
+  margin-bottom: 25px;
+  margin-top: -4px;
+}
+
+.PictureSize {
+  width: 100%;
+  
+  
+}
+
+.PictureM {
+  overflow-x: hidden;
+  padding: 30px;
+}
+
+/* SheetCSS */
+.ScroolingPage {
+  padding: 10px;
+  /* margin-top: -200px; */
+  height: 700px;
+}
+
+.NewCSS {
+  height: 1000px;
+}
+
+/* width: 200%; */
